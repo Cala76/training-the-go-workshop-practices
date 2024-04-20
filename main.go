@@ -1,29 +1,32 @@
 package main
 
 import (
+    "errors"
     "fmt"
-    "math"
 )
 
-func convert() string{
-    var i8 int8 = math.MaxInt8
-    i := 128
-    f64 := 3.14
-     m := fmt.Sprintf("int8  = %v > int64  = %v\n", i8, int64(i8))
-     // This will cause an overflow to int8's minimum size:
-     m += fmt.Sprintf("int   = %v > int8   = %v\n", i, int8(i))
-     m += fmt.Sprintf("int8  = %v > float64 = %v\n", i8, float64(i8))
-     m += fmt.Sprintf("float64 = %v > int   = %v\n", f64, int(f64))
-     return m
+func doubler(v interface{}) (string, error) {
+    if i, ok := v.(int); ok {
+        return fmt.Sprint(i * 2), nil
+    }
+    if s, ok := v.(string); ok {
+        return s + s, nil
+    }
+    return "", errors.New("unsupported type passed")
 }
 
 func main() {
     // Title:
-    fmt.Println ("Exercise 4.20: Numeric Type Conversion")
-    fmt.Println("Pag. 158 - PDF:191\n\r")
+    fmt.Println ("Exercise 4.21: Type Assertion")
+    fmt.Println("Pag. 161 - PDF:194\n\r")
     // Possible states: Started, Finished
     fmt.Println("Status: Finished\n\r")
     
-    fmt.Print(convert())
-  
+    res, _ := doubler(5)
+    fmt.Println("5   :", res)
+    res, _ = doubler("yum")
+    fmt.Println("yum :", res)
+    _, err := doubler(true)
+    fmt.Println("true:", err)
+
 } // End main()
